@@ -2,17 +2,39 @@ FROM openjdk:8
 
 MAINTAINER nickersoft@gmail.com
 
-# Add Buck dependencies
-RUN apt-get update && apt-get install -y git ant gcc python python-dev
+#################################
+#     INSTALLING THE BASICS     #
+#################################
 
-# Create a new Buck user account, creating a home directory and disabling a login shell
-RUN useradd -m -s /bin/false buck
+# Switch to the root user
+USER root
 
-# Make a root Buck directory and give its ownership over to the buck user
-RUN mkdir /buck && chown buck /buck
+# Update apt-get and install missing software
+RUN apt-get update
+RUN apt-get install -y git ant gcc g++ make python python-dev libssl-dev autoconf automake libtool pkg-config
 
-# Switch user to buck
-USER buck
+###############################
+#     INSTALLING WATCHMAN     #
+###############################
+
+# Clone the Watchman repo to /watchman
+RUN git clone https://github.com/facebook/watchman.git /watchman/
+
+# Change the working directory to /watchman
+WORKDIR /watchman
+
+# Checkout the latest stable version (v4.9.0 as of March 27, 2018)
+RUN git checkout v4.9.0
+
+# Run Watchman make commands
+RUN ./autogen.sh 
+RUN ./configure
+RUN make
+RUN make install
+
+###########################
+#     INSTALLING BUCK     #
+###########################
 
 # Clone the Buck repo to /buck
 RUN git clone https://github.com/facebook/buck.git /buck/
@@ -22,9 +44,6 @@ WORKDIR /buck
 
 # Build Buck
 RUN ant
-
-# Switch back to the root user
-USER root
 
 # Create a symlink in /usr/bin that points to /buck/bin/buck
 RUN ln -sf /buck/bin/buck /usr/bin/
