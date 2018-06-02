@@ -11,7 +11,7 @@ USER root
 
 # Update apt-get and install missing software
 RUN apt-get update
-RUN apt-get install -y git python python-dev curl pkg-config zip g++ zlib1g-dev unzip
+RUN apt-get install -y git python python-dev maven curl pkg-config zip g++ zlib1g-dev unzip
 
 ############################
 #     INSTALLING BAZEL     #
