@@ -2,6 +2,8 @@ FROM openjdk:9
 
 MAINTAINER nickersoft@gmail.com
 
+ENV BAZEL_VERSION=0.23.1
+
 #################################
 #     INSTALLING THE BASICS     #
 #################################
@@ -18,11 +20,11 @@ RUN apt-get install -y git python python-dev maven curl pkg-config zip g++ zlib1
 ############################
 
 # Download the install script
-RUN curl -L https://github.com/bazelbuild/bazel/releases/download/0.21.0/bazel-0.21.0-installer-linux-x86_64.sh > ./bazel-0.21.0-installer-linux-x86_64.sh
-RUN chmod +x bazel-0.21.0-installer-linux-x86_64.sh
+RUN curl -L https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh > ./bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
+RUN chmod +x bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
 
 # Run the install script
-RUN ./bazel-0.21.0-installer-linux-x86_64.sh --user
+RUN ./bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh --user
 
 # Create a symlink in /usr/bin that points to /root/bazel
 RUN ln -sf /root/.bazel/bin/bazel /usr/bin/
