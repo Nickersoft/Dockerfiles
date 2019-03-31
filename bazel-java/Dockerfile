@@ -1,4 +1,4 @@
-FROM openjdk:9
+FROM openjdk:11
 
 MAINTAINER nickersoft@gmail.com
 
