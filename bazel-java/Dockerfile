@@ -2,7 +2,7 @@ FROM openjdk:11
 
 MAINTAINER nickersoft@gmail.com
 
-ENV BAZEL_VERSION=0.24.0
+ENV BAZEL_VERSION=0.27.0
 
 #################################
 #     INSTALLING THE BASICS     #
